@@ -11,7 +11,7 @@ client.on('message', msg => {
   }
 });
 
-client.login('NzA0NTgwNjI2Nzc0NDkxMTg3.XuDuRA.aZCXhYNf_brrAVi6aovFp6g78QA');
+client.login('Token goes here');
 
 client.on('message', msg => {
   if (msg.content === '*serverinvite') {
