@@ -21,102 +21,7 @@ client.on('guildMemberAdd', member =>{
       member.guild.channels.cache.get('718914777291948113').send(welcomeEmbed)
 });
 
-client.on('message', msg =>{
-  let WelcomeTestEmbed = new Discord.MessageEmbed()
-  .setColor('#63e764')
-  .setTitle('**Welcome to Aviation hangouts!**')
-  .addField("**New Member:**", `Welcome ${msg.author.username} to the Aviation Hangouts Discord Server! please enjoy your time here :) Make sure to read <#718916575301730359> If you have any issues please contact a member of staff, Thanks :slight_smile:`, false) .setThumbnail('https://cdn.discordapp.com/attachments/718914777291948113/722128964373446660/unknown.png')
-  .setTimestamp()
-  if(msg.content === '!welcome')
-      msg.channel.send(WelcomeTestEmbed)
-});
 
-  client.on('message', msg => {
-    let VersionEmbed = new Discord.MessageEmbed()
-    .setColor('#63e764')
-    .setTitle(`${msg.author.username}, i am currently in version 1.5.5`)
-    if(msg.content === '!version') {
-        msg.channel.send(VersionEmbed)
-  }
-});
-
-
-client.on('message', msg =>{
-  let reportEmbed = new Discord.MessageEmbed()
-  .setColor('#6a1ad8')
-  .setTitle(`${msg.author.username}`)
-  .addField("**HOW TO REPORT:**", `${msg.author.username}, To report an issue with the bot DM Shadow Wolfy#8860, to report a user's behaviour ping any available staff member:`, false)
-  .setTimestamp()
-  if(msg.content === '!report')
-      msg.channel.send(reportEmbed)
-});
-
-
-client.on('message', msg =>{
-  let HelpEmbed = new Discord.MessageEmbed()
-  .setColor('#6a1ad8')
-  .setTitle('**HELP HAS BEEN CALLED!**')
-  .addField("**Help has arrived!:**", `${msg.author.username}, My commands are !welcome, !ban, !kick, !invites, !waddle, ahegao, !bullshit, !sorry, !akward, !ping, !version More to come soon :slight_smile:`, false)
-  .setTimestamp()
-  if(msg.content === '!help')
-      msg.channel.send(HelpEmbed)
-});
-
-client.on('message', msg =>{
-  let WaddleEmbed = new Discord.MessageEmbed()
-  .setColor('#Blue')
-  .setTitle('**Waddle!**')
-  .setImage('https://media.discordapp.net/attachments/592463507124125706/721910509783351336/Penguin_bots_bot_pfp_.png?width=319&height=475')
-  .setTimestamp()
-  if(msg.content === '!waddle')
-      msg.channel.send(WaddleEmbed)
-});
-
-
-
-client.on('message', msg =>{
-  let AkwardEmbed = new Discord.MessageEmbed()
-  .setColor('#Blue')
-  .setTitle(`${msg.author.username}, o.0`)
-  .setImage('https://tenor.com/view/pedro-monkey-puppet-meme-awkward-gif-15268759')
-  .setTimestamp()
-  if(msg.content === '!akward')
-      msg.channel.send(AkwardEmbed)
-});
-
-
-
-client.on('message', msg =>{
-  let AhegaoEmbed = new Discord.MessageEmbed()
-  .setColor('#Blue')
-  .setTitle('**Ahegao!**')
-  .setImage('https://cdn.discordapp.com/avatars/415970164077756419/df2b320f675c8e58249445275327a5b9.png?size=256')
-  .setTimestamp()
-  if(msg.content === '!ahegao')
-      msg.channel.send(AhegaoEmbed)
-});
-
-
-client.on('message', msg =>{
-  let CyberBullyEmbed = new Discord.MessageEmbed()
-  .setColor('#Blue')
-  .setTitle(`${msg.author.username}, would like to apologise`)
-  .setImage('https://cdn.discordapp.com/attachments/592463507124125706/721930224094281828/image0.jpg')
-  .setTimestamp()
-  if(msg.content === '!sorry')
-      msg.channel.send(CyberBullyEmbed)
-});
-
-
-client.on('message', msg =>{
-  let BullshitEmbed = new Discord.MessageEmbed()
-  .setColor('#Blue')
-  .setTitle(`${msg.author.username}, has seen enough of your bullshit`)
-  .setImage('https://cdn.discordapp.com/attachments/592463507124125706/721930167349542932/unknown.gif')
-  .setTimestamp()
-  if(msg.content === '!bullshit')
-      msg.channel.send(BullshitEmbed)
-});
 
 
   
@@ -180,14 +85,44 @@ client.on("message", async message => {
   
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
-  
- 
-  
+
+  if(command === "help") {
+    let HelpEmbed = new Discord.MessageEmbed()
+    .setColor('#ffffff')
+    .setTitle(`${message.author.username},My commands are !help, !ping, !dog, !waddle, !ahegao, more to come though`) 
+    .setTimestamp()
+    return message.channel.send(HelpEmbed)
+  }
+ if (command === "waddle") {
+  let waddleEmbed = new Discord.MessageEmbed()
+  .setTitle(`${message.author.tag}, Waddle or die tommorow`)
+ .setColor('#0e70df')
+ .setImage('https://images-ext-1.discordapp.net/external/kvLhDXQtIUeanQMCwSSz6WlrRAWpJG3XxBQi_E3GwFI/%3Fwidth%3D319%26height%3D475/https/media.discordapp.net/attachments/592463507124125706/721910509783351336/Penguin_bots_bot_pfp_.png')
+  return message.channel.send(waddleEmbed)
+ }
+
+if(command === "bork")  {
+  let borkEmbed = new Discord.MessageEmbed()
+  .setTitle('Bork!')
+  .setImage(`https://media.discordapp.net/attachments/592463507124125706/723222781508059156/B3Frk.png?width=633&height=475`)
+  .setTimestamp()
+return message.channel.send(borkEmbed)
+}     
+
+ if (command === "ahegao")  {
+   let ahegaoEmbed = new Discord.MessageEmbed()
+   .setTitle(`Ahegao!`)
+   .setImage(`https://cdn.discordapp.com/attachments/592463507124125706/723222937175326791/ahego_.png`)
+   .setTimestamp()
+   return message.channel.send(ahegaoEmbed)
+ }
+
   if(command === "ping") {
 
     const m = await message.channel.send("Getting the ping");
     m.edit(`Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ws.ping)}ms`);
   }
+
   
   if(command === "say") {
     if(!message.member.roles.cache.some(r=>["Staff"].includes(r.name)))
@@ -199,6 +134,7 @@ client.on("message", async message => {
     
     message.channel.send(sayMessage);
   }
+
   if(command === "kick") {
     let RolePermsEmbed = new Discord.MessageEmbed()
     .setColor('#cf1313')
@@ -281,7 +217,8 @@ let bansuccesEmbed = new Discord.MessageEmbed()
       .catch(error => message.reply(`Sorry ${message.author} I couldn't ban because of : ${error}`));
     message.channel.send(bansuccesEmbed);
   }
-}); 
+
+});
 
 
 client.on('guildMemberRemove', async member => {
@@ -289,18 +226,15 @@ client.on('guildMemberRemove', async member => {
 		limit: 1,
 		type: 'MEMBER_KICK',
 	});
-	// Since we only have 1 audit log entry in this collection, we can simply grab the first one
+
 	const kickLog = fetchedLogs.entries.first();
 
-	// Let's perform a sanity check here and make sure we got *something*
+
 	if (!kickLog) return console.log(`${member.user.tag} left the guild, most likely of their own will.`);
 
-	// We now grab the user object of the person who kicked our member
-	// Let us also grab the target of this action to double check things
+	
 	const { executor, target } = kickLog;
 
-	// And now we can update our output with a bit more information
-	// We will also run a check to make sure the log we got was for the same kicked member
 	if (target.id === member.id) {
 		console.log(`${member.user.tag} left the guild; kicked by ${executor.tag}?`);
 	} else {
@@ -313,18 +247,16 @@ client.on('guildBanAdd', async (guild, user) => {
 		limit: 1,
 		type: 'MEMBER_BAN_ADD',
 	});
-	// Since we only have 1 audit log entry in this collection, we can simply grab the first one
+
 	const banLog = fetchedLogs.entries.first();
 
-	// Let's perform a sanity check here and make sure we got *something*
+	
 	if (!banLog) return console.log(`${user.tag} was banned from ${guild.name} but no audit log could be found.`);
 
-	// We now grab the user object of the person who banned the user
-	// Let us also grab the target of this action to double check things
+	
 	const { executor, target } = banLog;
 
-	// And now we can update our output with a bit more information
-	// We will also run a check to make sure the log we got was for the same kicked member
+
 	if (target.id === user.id) {
 		console.log(`${user.tag} banned in ${guild.name}, banned by ${executor.tag}`);
 	} else {
@@ -340,7 +272,7 @@ const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
 fetch('https://aws.random.cat/meow').then(response => response.json());
 
 if (command === 'cat') {
-	const { file } = await fetch('').then(response => response.json());
+	const { file } = await fetch('https://aws.random.cat/meow').then(response => response.json());
 const CatEmbed = new Discord.MessageEmbed()
 .setTitle('CAT!')
 .setImage(file)
