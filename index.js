@@ -5,8 +5,9 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
+const { prefix, token } = require('./config.json');
 
-client.login('insert-token-here');
+client.login(token);
 
 process.setMaxListeners(20);
 
@@ -281,6 +282,73 @@ let bansuccesEmbed = new Discord.MessageEmbed()
     message.channel.send(bansuccesEmbed);
   }
 }); 
+
+
+client.on('guildMemberRemove', async member => {
+	const fetchedLogs = await member.guild.fetchAuditLogs({
+		limit: 1,
+		type: 'MEMBER_KICK',
+	});
+	// Since we only have 1 audit log entry in this collection, we can simply grab the first one
+	const kickLog = fetchedLogs.entries.first();
+
+	// Let's perform a sanity check here and make sure we got *something*
+	if (!kickLog) return console.log(`${member.user.tag} left the guild, most likely of their own will.`);
+
+	// We now grab the user object of the person who kicked our member
+	// Let us also grab the target of this action to double check things
+	const { executor, target } = kickLog;
+
+	// And now we can update our output with a bit more information
+	// We will also run a check to make sure the log we got was for the same kicked member
+	if (target.id === member.id) {
+		console.log(`${member.user.tag} left the guild; kicked by ${executor.tag}?`);
+	} else {
+		console.log(`${member.user.tag} left the guild, audit log fetch was inconclusive.`);
+	}
+});
+
+client.on('guildBanAdd', async (guild, user) => {
+	const fetchedLogs = await guild.fetchAuditLogs({
+		limit: 1,
+		type: 'MEMBER_BAN_ADD',
+	});
+	// Since we only have 1 audit log entry in this collection, we can simply grab the first one
+	const banLog = fetchedLogs.entries.first();
+
+	// Let's perform a sanity check here and make sure we got *something*
+	if (!banLog) return console.log(`${user.tag} was banned from ${guild.name} but no audit log could be found.`);
+
+	// We now grab the user object of the person who banned the user
+	// Let us also grab the target of this action to double check things
+	const { executor, target } = banLog;
+
+	// And now we can update our output with a bit more information
+	// We will also run a check to make sure the log we got was for the same kicked member
+	if (target.id === user.id) {
+		console.log(`${user.tag} banned in ${guild.name}, banned by ${executor.tag}`);
+	} else {
+		console.log(`${user.tag} banned in ${guild.name}, no audit logs found.`);
+	}
+});
+
+client.on('message', async message => {
+const fetch = require('node-fetch');
+const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase()
+
+fetch('https://aws.random.cat/meow').then(response => response.json());
+
+if (command === 'cat') {
+	const { file } = await fetch('').then(response => response.json());
+const CatEmbed = new Discord.MessageEmbed()
+.setTitle('CAT!')
+.setImage(file)
+.setTimestamp()
+	message.channel.send(CatEmbed);
+
+}
+});
 
 
 
