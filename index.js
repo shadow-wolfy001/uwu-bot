@@ -18,7 +18,8 @@ client.on('guildMemberAdd', member =>{
   .addField("**New Member:**", `Welcome ${member} to the Aviation Hangouts Discord Server! please enjoy your time here :) Make sure to read <#718916575301730359> If you have any issues please contact a member of staff, Thanks :slight_smile:`, false) .setThumbnail('https://cdn.discordapp.com/attachments/718914777291948113/722128964373446660/unknown.png')
   .setTimestamp()
 
-      member.guild.channels.cache.get('718914777291948113').send(welcomeEmbed)
+      member.guild.channels.cache.get('718914777291948113')
+      send(welcomeEmbed)
 });
 
 
@@ -76,6 +77,12 @@ client.on("guildDelete", guild => {
 
 
 client.on("message", async message => {
+
+
+
+  const Discord = require('discord.js');
+
+  let member = message.mentions.members.first();
   
   if(message.author.bot) return;
   
@@ -89,7 +96,7 @@ client.on("message", async message => {
   if(command === "help") {
     let HelpEmbed = new Discord.MessageEmbed()
     .setColor('#ffffff')
-    .setTitle(`${message.author.username},My commands are !help, !ping, !dog, !waddle, !ahegao, more to come though`) 
+    .setTitle(`${message.author.username},My commands are !help, !ping, !dog, !waddle, !ahegao, !ban, !kick, !warn, !bork more to come though`) 
     .setTimestamp()
     return message.channel.send(HelpEmbed)
   }
@@ -125,8 +132,8 @@ return message.channel.send(borkEmbed)
 
   
   if(command === "say") {
-    if(!message.member.roles.cache.some(r=>["Staff"].includes(r.name)))
-    return message.reply("Lol noob, you dont have permission");
+    if(!message.member.hasPermission("KICK_MEMBERS"))
+    return message.reply("Lol noob, you dont have permission, the kick members perms is required");
    
     const sayMessage = args.join(" ");
     
@@ -138,11 +145,11 @@ return message.channel.send(borkEmbed)
   if(command === "kick") {
     let RolePermsEmbed = new Discord.MessageEmbed()
     .setColor('#cf1313')
-    .setTitle(`${message.author.username}, You do not have the required permission to do this`) 
+    .setTitle(`${message.author.username}, You do not have the required permission to do this, kick members perms is required`) 
     .setTimestamp()
     
-    if(!message.member.roles.cache.some(r=>["Staff"].includes(r.name)))
-      return message.channel.send(RolePermsEmbed);
+    if(!message.member.hasPermission("KICK_MEMBERS"))
+      return message.channel.send(RolePermsEmbed)
 
 
     
@@ -179,13 +186,57 @@ return message.channel.send(borkEmbed)
     message.channel.send(kicksuccesEmbed);
 
   }
-  
+
+
+  if(command === `warn`){          
+
+    let dMessage = args.join(" ").slice(22);
+
+    let WarnCantFindEmbed = new Discord.MessageEmbed()
+    .setTitle('I cant warn somebody if you dont tell me who to warn :/')
+
+
+    let ServerWarnEmbed = new Discord.MessageEmbed()
+    .setTitle(`${message.author.username} has warned ${member} for ${dMessage}`)
+
+    let NoWarnReason = new Discord.MessageEmbed()
+    .setTitle('You need to enter a valid reason.')
+
+
+    WarnEmbed = new Discord.MessageEmbed()
+ .setTitle(`you have been warned in ${message.guild.name} by ${message.author.username}, for ${dMessage}`)
+ .setTimestamp()
+
+
+    if (!member)
+
+    
+    return message.channel.send(WarnCantFindEmbed)
+
+    if(!message.member.hasPermission("KICK_MEMBERS"))
+
+    return message.reply(validMemberEmbed)
+
+
+    if(dMessage.length < 1) 
+
+
+    return message.channel.send(NoWarnReason)
+
+    member.send(WarnEmbed)
+
+    message.channel.send(ServerWarnEmbed)
+}
+
+
   if(command === "ban") {
+
       let RolePermsEmbed = new Discord.MessageEmbed()
       .setColor('#cf1313')
       .setTitle(`${message.author.username}, You do not have the required permission to do this`) 
       .setTimestamp()
-      if(!message.member.roles.cache.some(r=>["Staff"].includes(r.name)))
+      if(!message.member.hasPermission("BAN_MEMBERS"))
+      
       return message.channel.send(RolePermsEmbed);
 
 
@@ -218,70 +269,44 @@ let bansuccesEmbed = new Discord.MessageEmbed()
     message.channel.send(bansuccesEmbed);
   }
 
-});
 
-
-client.on('guildMemberRemove', async member => {
-	const fetchedLogs = await member.guild.fetchAuditLogs({
-		limit: 1,
-		type: 'MEMBER_KICK',
-	});
-
-	const kickLog = fetchedLogs.entries.first();
-
-
-	if (!kickLog) return console.log(`${member.user.tag} left the guild, most likely of their own will.`);
-
-	
-	const { executor, target } = kickLog;
-
-	if (target.id === member.id) {
-		console.log(`${member.user.tag} left the guild; kicked by ${executor.tag}?`);
-	} else {
-		console.log(`${member.user.tag} left the guild, audit log fetch was inconclusive.`);
-	}
-});
-
-client.on('guildBanAdd', async (guild, user) => {
-	const fetchedLogs = await guild.fetchAuditLogs({
-		limit: 1,
-		type: 'MEMBER_BAN_ADD',
-	});
-
-	const banLog = fetchedLogs.entries.first();
-
-	
-	if (!banLog) return console.log(`${user.tag} was banned from ${guild.name} but no audit log could be found.`);
-
-	
-	const { executor, target } = banLog;
-
-
-	if (target.id === user.id) {
-		console.log(`${user.tag} banned in ${guild.name}, banned by ${executor.tag}`);
-	} else {
-		console.log(`${user.tag} banned in ${guild.name}, no audit logs found.`);
-	}
-});
-
-client.on('message', async message => {
-const fetch = require('node-fetch');
-const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-  const command = args.shift().toLowerCase()
-
-fetch('https://aws.random.cat/meow').then(response => response.json());
-
-if (command === 'cat') {
-	const { file } = await fetch('https://aws.random.cat/meow').then(response => response.json());
-const CatEmbed = new Discord.MessageEmbed()
-.setTitle('CAT!')
-.setImage(file)
-.setTimestamp()
-	message.channel.send(CatEmbed);
-
-}
-});
+  let nonumberembed = new Discord.MessageEmbed()
+  .setTitle(`You did not give me a time for how long slowmode should be`)
+  .setTimestamp()
 
 
 
 
+
+
+  if(command === "slowmode") {
+
+    let RolePermsEmbed = new Discord.MessageEmbed()
+    .setColor('#cf1313')
+    .setTitle(`${message.author.username}, You do not have the required permission to do this`) 
+    .setTimestamp()
+    if(!message.member.hasPermission("MANAGE_MESSAGES"))
+    
+    return message.channel.send(RolePermsEmbed);
+
+
+
+if (isNaN(args[0]))
+ return message.channel.send(nonumberembed)
+
+ message.channel.setRateLimitPerUser(args[0], )
+
+
+ let slowmodeembed = new Discord.MessageEmbed()
+ .setTitle(`${message.author.username}has set the slowmode to ${args[0]} second's`)
+ .setTimestamp()
+
+
+
+
+
+ message.channel.send(slowmodeembed)}
+
+
+
+  });
